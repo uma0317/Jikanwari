@@ -8,7 +8,7 @@ import 'onsenui/css/onsen-css-components.css'
 import Vue from 'vue'
 import $ons from 'vue-onsenui/esm'
 import * as VOns from './vue-onsen-components'
-import store from './store'
+import store from './store/index'
 import App from './App'
 
 Vue.config.productionTip = false

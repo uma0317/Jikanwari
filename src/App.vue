@@ -17,7 +17,6 @@
 <script>
 import HomePage from './pages/HomePage'
 import MenuPage from './pages/MenuPage'
-
 export default {
   name: 'app',
   computed: {
