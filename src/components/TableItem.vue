@@ -1,6 +1,6 @@
 <template>
     <g :transform="itemTransform">
-        <rect x=0 y=0 width=80 height=200 rx=5 ry=5 fill="#2CEFBA" stroke="black" stroke-width="2" />
+        <rect x=0 y=0 width=80 :height="itemHeight" rx=5 ry=5 fill="#2CEFBA" stroke="black" stroke-width="2" />
         <rect x=0 y=0 width=80 height=30 rx=5 ry=5 fill="#ffffff" stroke="black" stroke-width="2" />
         <text y=15 x=40 style="font-size:10px" text-anchor="middle" dominant-baseline="middle">{{startHour}}:{{startMinutes}} ~ {{endHour}}:{{endMinutes}}</text>
         <clipPath id="clip1">
@@ -15,6 +15,12 @@
 <script>
 import {mapGetters} from 'vuex'
 import Datas from './Datas'
+function getY (hour, minutes, dayNum, baseHour) {
+    const dim = Datas.tableWidth / dayNum
+    let hourPos = dim * (hour - baseHour)
+    let minPos = dim / 60 * minutes
+    return hourPos + minPos
+}
 export default {
     props: [
         'day',
@@ -33,9 +39,10 @@ export default {
     computed: {
         itemTransform: function () {
             const dim = Datas.tableWidth / this.$store.getters.dayNum
-            let hourPos = dim * (this.startHour - this.$store.getters.startHour)
-            let minPos = dim / 60 * this.startMinutes
-            let y = hourPos + minPos
+            // let hourPos = dim * (this.startHour - this.$store.getters.startHour)
+            // let minPos = dim / 60 * this.startMinutes
+            // let y = hourPos + minPos
+            let y = getY(this.startHour, this.startMinutes, this.$store.getters.dayNum, this.$store.getters.startHour)
             let x            
             Datas.days.forEach( (val, index) => {
                 if(val === this.day) {
@@ -44,6 +51,12 @@ export default {
                 } 
             })
             return `translate(${x}, ${y})`
+        },
+        itemHeight: function () {
+            let startPosY = getY(this.startHour, this.startMinutes, this.$store.getters.dayNum, this.$store.getters.startHour)
+            let endPosY = getY(this.endHour, this.endMinutes, this.$store.getters.dayNum, this.$store.getters.startHour)
+            console.log(startPosY, endPosY)
+            return endPosY - startPosY
         },
         test: function() {
             return "translate(50, 0)"
