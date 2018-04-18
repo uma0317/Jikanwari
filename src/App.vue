@@ -1,43 +1,64 @@
 <template>
   <v-ons-page id="app">
-    <v-ons-splitter>
-      <v-ons-splitter-side swipeable collapse width="250px"
-        :animation="$ons.platform.isAndroid() ? 'overlay' : 'reveal'"
-        :open.sync="menuIsOpen">
-        <menu-page></menu-page>
-      </v-ons-splitter-side>
-
-      <v-ons-splitter-content>
-        <home-page></home-page>
-      </v-ons-splitter-content>
-    </v-ons-splitter>
+    <v-ons-tabbar swipeable position="auto"
+      :tabs="tabs"
+      :visible="true"
+      :index.sync="activeIndex"
+    >
+    </v-ons-tabbar>
   </v-ons-page>
 </template>
 
 <script>
+import DB from '@/db/db'
 import HomePage from './pages/HomePage'
-import MenuPage from './pages/MenuPage'
+import Settings from './pages/Settings'
+import Detail from './pages/Detail'
+var db = new DB()
 export default {
-  name: 'app',
+  data() {
+    return {
+      activeIndex: 0,
+      tabs: [
+        {
+          icon: 'fa-home',
+          label: "Home",
+          page: HomePage,
+          key: "homePage"
+        },
+        {
+          icon: 'fa-bell',
+          label: 'News',
+          page: Detail,
+          badge: 7,
+          key: "newsPage"
+        },
+        {
+          icon: 'fa-sliders',
+          label: 'Settings',
+          page: Settings,
+          key: "settingsPage"
+        }
+      ]
+    };
+  },
+  methods: {
+    md() {
+      return this.$ons.platform.isAndroid();
+    }
+  },
   computed: {
-    menuIsOpen: {
-      get () {
-        return this.$store.state.splitter.open
-      },
-      set (newValue) {
-        this.$store.commit('splitter/toggle', newValue)
-      }
+    title() {
+      return this.tabs[this.activeIndex].label;
     }
   },
   components: {
     HomePage,
-    MenuPage
+    Settings,
+    Detail
   }
 }
 </script>
 
 <style>
-ons-splitter-side[side=left][animation=overlay] {
-  border-right: 1px solid #BBB;
-}
 </style>

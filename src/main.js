@@ -10,10 +10,10 @@ import $ons from 'vue-onsenui/esm'
 import * as VOns from './vue-onsen-components'
 import store from './store/index'
 import App from './App'
-
+import VueOnsen from 'vue-onsenui';
 Vue.config.productionTip = false
 
-Vue.use($ons)
+Vue.use(VueOnsen)
 Object.values(VOns).forEach(comp => Vue.component(comp.name, comp))
 
 /* eslint-disable no-new */

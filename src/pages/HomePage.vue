@@ -1,68 +1,26 @@
-<template>
+<template id="home">
   <v-ons-page>
-    <v-ons-toolbar class="home-toolbar">
-      <div class="left">
-        <v-ons-toolbar-button @click="$store.commit('splitter/toggle')">
-          <v-ons-icon icon="fa-bars"></v-ons-icon>
-        </v-ons-toolbar-button>
-      </div>
-      <div class="center">{{ msg }}</div>
-    </v-ons-toolbar>
-
-    <!-- <v-ons-list-title>Vue.js Essential Links</v-ons-list-title>
-    <v-ons-list>
-      <v-ons-list-item v-for="item in essentialLinks" @click="goTo(item.link)" :key="item.link">
-        <div class="left"><v-ons-icon fixed-width :icon="item.icon"></v-ons-icon></div>
-        <div class="center">{{ item.label }}</div>
-        <div class="right"><v-ons-icon icon="fa-external-link"></v-ons-icon></div>
-      </v-ons-list-item>
-    </v-ons-list>
-
-    <v-ons-list-title>Vue.js Ecosystem</v-ons-list-title>
-    <v-ons-row>
-      <v-ons-col>
-        <v-ons-card @click="goTo('http://router.vuejs.org/')">vue-router</v-ons-card>
-      </v-ons-col>
-      <v-ons-col>
-        <v-ons-card @click="goTo('http://vuex.vuejs.org/')">vuex</v-ons-card>
-      </v-ons-col>
-    </v-ons-row> -->
-    <Table />
+    <v-ons-navigator swipeable
+      :page-stack="pageStack"
+      @push-page="pageStack.push($event)"
+    ></v-ons-navigator>
   </v-ons-page>
 </template>
 
 <script>
 import Table from '@/components/Table'
 export default {
-  name: 'home',
   data () {
     return {
-      msg: 'Welcome',
-      essentialLinks: [
-        {
-          label: 'Core Docs',
-          link: 'https://vuejs.org',
-          icon: 'fa-book'
-        },
-        {
-          label: 'Community Chat',
-          link: 'https://chat.vuejs.org',
-          icon: 'fa-commenting'
-        },
-      ]
+      pageStack: [Table],
     }
   },
   methods: {
-    goTo (url) {
-      const newWindow = window.open(url, '_blank')
-      newWindow.opener = null
-      newWindow.location = url
-    }
+
   },
-  
   components: {
     Table
-  }
+  },
 }
 </script>
 

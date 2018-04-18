@@ -1,38 +1,47 @@
 <template>
-    <div class="contents">
-        <div class="svg-wrapper">
-            <svg :viewBox="viewBox">
-                <g :transform="timeTransform">
-                    <text  v-for="n in hourRange" :x="tableWidth * (1 - tableScale)" :y ="dim * (n - 1) + tablePaddingTop" text-anchor="end" dominant-baseline="middle" style="font-size:15px">{{(n + startHour - 1) + ":00"}}</text>                                        
-                </g>
-                <g :transform="daysAndTableTransform">
-                    <text  v-for="n in dayNum" :x="(dim * n - 1) - (dim / 2)" y ="30" text-anchor="middle" style="font-size: 20px">{{days[n - 1]}}</text>                    
-                    <g :transform="tableTransform" >
-                        <line id="verticalLine"v-for="n in dayNum" :x1="dim * n" y1="0" :x2="dim * n" :y2="(hourRange - 1) * dim" stroke="black" stroke-width="2" />
-                        <line id="horizontalLine" v-for="n in hourRange" x1="0" :y1="dim * (n - 1)" x2="640" :y2="dim * (n - 1)" stroke="black" stroke-width="2" />
-                        <TableItem v-for="tableItem in tableItems"
-                            :key="tableItem.id" :day="tableItem.day" :name="tableItem.name" :place="tableItem.place"
-                            :startHour="tableItem.startHour" :startMinutes="tableItem.startMinutes"
-                            :endHour="tableItem.endHour" :endMinutes="tableItem.endMinutes"
-                        />                    
+    <v-ons-page>
+        <v-ons-toolbar class="home-toolbar">
+            <div class="center">HOME</div>
+        </v-ons-toolbar>
+        <div class="contents">
+            <div class="svg-wrapper">
+                <svg :viewBox="`0 0 ${this.tableWidth} ${this.cellHeight * this.hourRange + 35}`">
+                    <g :transform="timeTransform">
+                        <text  v-for="n in 24" v-if="n-1 <= endHour && n-1 >= startHour" :x="tableWidth * (1 - tableScale)" :y ="cellHeight * (n - 1) + tablePaddingTop - cellHeight * startHour" text-anchor="end" dominant-baseline="middle" style="font-size:15px">{{n-1 + ":00"}}</text>                                        
                     </g>
-                </g>
-            </svg>
+                    <g :transform="daysAndTableTransform">
+                        <text  v-for="(day, n) in days" v-if="n <= dayNum - 1" :x="dim * (n + 1 - 1/2)" y ="30" text-anchor="middle" style="font-size: 20px">{{day}}</text>                    
+                        <!-- <text  v-for="n in dayNum" :x="(dim * n - 1) - (dim / 2)" y ="30" text-anchor="middle" style="font-size: 20px">{{days[n - 1]}}</text>                     -->
+                        <g :transform="tableTransform" >
+                            <line id="verticalLine" v-if="vertical && n < dayNum && n != 0" v-for="(day, n) in days" :x1="dim * n" y1="0" :x2="dim * n" :y2="hourRange * cellHeight" stroke="black" stroke-width="1" />
+                            <line id="horizontalLine" v-if="horizontal" v-for="n in hourRange + 1" x1="0" :y1="cellHeight * (n - 1)" x2="640" :y2="cellHeight * (n - 1)" stroke="black" stroke-width="1" />
+                            <TableItem v-for="tableItem in tableItems"
+                                :key="tableItem.id" :id="tableItem.id" :day="tableItem.day" :name="tableItem.name" :classRoom="tableItem.classRoom"
+                                :startHour="tableItem.startHour" :startMinutes="tableItem.startMinutes"
+                                :endHour="tableItem.endHour" :endMinutes="tableItem.endMinutes"
+                                @recive="push(tableItem.id); header=true"
+                            />                    
+                        </g>
+                    </g>
+                </svg>
+            </div>
         </div>
-    </div>
+    </v-ons-page>
 </template>
 
 <script>
 import TableItem from './TableItem'
 import {mapGetters} from 'vuex'
 import Datas from './Datas'
+import Detail from '@/pages/Detail'
 export default {
     data () {
         return {
             tablePaddingTop: Datas.tablePaddingTop,
             days: Datas.days,
             tableScale: Datas.tableScale,
-            tableWidth: Datas.tableWidth
+            tableWidth: Datas.tableWidth,
+            cellHeight: Datas.cellHeight,
         }
     },
     computed: {
@@ -40,13 +49,16 @@ export default {
             'tableItems',
             'dayNum',
             'startHour',
-            'endHour'
+            'endHour',
+            'vertical',
+            'horizontal'
         ]),
         viewBox: function () {
-            return "0 0 " + this.tableWidth + " " + this.dim * this.hourRange
+            // return "0 0 " + this.tableWidth + " " + this.dim * this.hourRange
+            return `0 0 ${this.tableWidth} ${this.cellHeight * this.hourRange}`
         },
         hourRange: function() {
-            return this.endHour - this.startHour + 1
+            return this.endHour - this.startHour
         },
         dim: function() {
             return this.tableWidth / this.dayNum
@@ -66,12 +78,15 @@ export default {
     },
 
     methods: {
-        itemPosX: function (day) {
-            const dim = this.tableWidth / this.dayNum
-            console.log(dim)
-            this.days.forEach( function (val, index) {
-                if(day === val) {
-                    return (dim * index - 1) - (dim / 2)
+        push (id) {
+            console.log(id)
+            this.$emit('push-page', {
+                extends: Detail,
+                data () {
+                    return {
+                        id: id
+
+                    }
                 }
             })
         },
