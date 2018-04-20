@@ -5,7 +5,7 @@
         </v-ons-toolbar>
         <div class="contents">
             <div class="svg-wrapper">
-                <svg :viewBox="`0 0 ${this.tableWidth} ${this.cellHeight * this.hourRange + 35}`">
+                <svg :viewBox="`0 0 ${this.tableWidth} ${this.cellHeight * this.hourRange}`">
                     <g :transform="timeTransform">
                         <text  v-for="n in 24" v-if="n-1 <= endHour && n-1 >= startHour" :x="tableWidth * (1 - tableScale)" :y ="cellHeight * (n - 1) + tablePaddingTop - cellHeight * startHour" text-anchor="end" dominant-baseline="middle" style="font-size:15px">{{n-1 + ":00"}}</text>                                        
                     </g>
@@ -15,11 +15,11 @@
                         <g :transform="tableTransform" >
                             <line id="verticalLine" v-if="vertical && n < dayNum && n != 0" v-for="(day, n) in days" :x1="dim * n" y1="0" :x2="dim * n" :y2="hourRange * cellHeight" stroke="black" stroke-width="1" />
                             <line id="horizontalLine" v-if="horizontal" v-for="n in hourRange + 1" x1="0" :y1="cellHeight * (n - 1)" x2="640" :y2="cellHeight * (n - 1)" stroke="black" stroke-width="1" />
-                            <TableItem v-for="tableItem in tableItems"
-                                :key="tableItem.id" :id="tableItem.id" :day="tableItem.day" :name="tableItem.name" :classRoom="tableItem.classRoom"
+                            <TableItem v-for="(tableItem, id) in tableItems"
+                                :key="id" :id="id" :day="tableItem.day" :name="tableItem.name" :classRoom="tableItem.classRoom"
                                 :startHour="tableItem.startHour" :startMinutes="tableItem.startMinutes"
                                 :endHour="tableItem.endHour" :endMinutes="tableItem.endMinutes"
-                                @recive="push(tableItem.id); header=true"
+                                @recive="push(id); header=true"
                             />                    
                         </g>
                     </g>
@@ -79,13 +79,11 @@ export default {
 
     methods: {
         push (id) {
-            console.log(id)
             this.$emit('push-page', {
                 extends: Detail,
                 data () {
                     return {
                         id: id
-
                     }
                 }
             })
@@ -98,6 +96,7 @@ export default {
     },
     
     created () {
+        this.$store.dispatch('getSettings')
         this.$store.dispatch('getAllTableItems')
     },
 

@@ -4,13 +4,12 @@
 import 'font-awesome/css/font-awesome.css'
 import 'onsenui/css/onsenui-core.css'
 import 'onsenui/css/onsen-css-components.css'
-
 import Vue from 'vue'
 import $ons from 'vue-onsenui/esm'
 import * as VOns from './vue-onsen-components'
 import store from './store/index'
 import App from './App'
-import VueOnsen from 'vue-onsenui';
+import VueOnsen from 'vue-onsenui'
 Vue.config.productionTip = false
 
 Vue.use(VueOnsen)

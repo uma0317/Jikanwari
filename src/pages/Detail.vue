@@ -13,7 +13,7 @@
             </label>
             <div class="right"
                 <v-ons-input style="width:80%;" placeholder="Input Subject Name" float
-                v-model="subjectName"
+                v-model="datas.name"
                 >
                 </v-ons-input>
             </div>
@@ -24,7 +24,7 @@
             </label>
             <div class="right"
                 <v-ons-input style="width:80%;" placeholder="Input ClassRoom Name" float
-                v-model="classRoomtName"
+                v-model="datas.classRoom"
                 >
                 </v-ons-input>
             </div>
@@ -35,51 +35,124 @@
             </label>
             <div class="right"
                 <v-ons-input style="width:80%;" placeholder="Input Teacher Name" float
-                v-model="teacherName"
+                v-model="datas.teacher"
                 >
                 </v-ons-input>
             </div>
         </v-ons-list-item>
         <v-ons-list-item>
-            <label class="center">
-                開始時刻
+            <label class="left">
+                曜日
             </label>
-          <v-ons-select style="width: 40%"
-            v-model="startHour"
-            class="right"
-          >
-            <option v-for="item in hours" :value="item.value">
-              {{ item.text }}
-            </option>
-          </v-ons-select>
+            <div class="right"
+              <v-ons-select 
+                v-model="datas.day"
+                class="right"
+              >
+                <option v-for="item in wdays" :value="item.value">
+                  {{ item.text }}
+                </option>
+              </v-ons-select>
+            </div>
         </v-ons-list-item>
         <v-ons-list-item>
-            <label class="center">
-                終了時刻
-            </label>
-          <v-ons-select style="width: 40%"
-            v-model="endHour"
-            class="right"
-          >
-            <option v-for="item in hours" :value="item.value">
-              {{ item.text }}
-            </option>
-          </v-ons-select>
+          <label class="center">
+            開始時刻
+          </label>
+          <div class="right">
+            <v-ons-select 
+              v-model="datas.startHour"
+              class="center"
+            >
+              <option v-for="item in hours" :value="item.value">
+                {{ item.text }}
+              </option>
+            </v-ons-select>
+            　:　
+            <v-ons-select 
+              v-model="datas.startMinutes"
+              class="center"
+            >
+              <option v-for="item in minutes" :value="item.value">
+                {{ item.text }}
+              </option>
+            </v-ons-select>
+          </div>
+        </v-ons-list-item>
+        <v-ons-list-item>
+          <label class="center">
+            開始時刻
+          </label>
+          <div class="right">
+            <v-ons-select 
+              v-model="datas.endHour"
+              class="center"
+            >
+              <option v-for="item in hours" :value="item.value">
+                {{ item.text }}
+              </option>
+            </v-ons-select>
+            　:　
+            <v-ons-select 
+              v-model="datas.endMinutes"
+              class="center"
+            >
+              <option v-for="item in minutes" :value="item.value">
+                {{ item.text }}
+              </option>
+            </v-ons-select>
+          </div>
         </v-ons-list-item>
     </v-ons-list>
   </v-ons-page>
 </template>
 
 <script>
+import DB from '@/db/db'
+import Datas from '@/components/Datas'
 export default {
-    data () {
-        return {
-            id: "heello"
-        }
-    },
-    created () {
-        this.$store.dispatch('getAllTableItems')
+
+  data () {
+      return {
+        datas: {
+
+        },
+        hours: this.range(24),
+        minutes: this.range(60),
+      }
+  },
+  computed: {
+    wdays: function() {
+      let array = []
+      for(let val of Datas.days) {
+          array.push({text: val, value: val})
+      }
+      return array
     }
+  },
+  methods: {
+    range (num) {
+        let array = []
+        for(let i = 0; i < num; i++) {
+            array.push({text: i, value: i})
+        }
+        return array
+    },
+  },
+  watch: {
+    datas: {
+      handler(newVal, oldVal) {
+        if(Object.keys(oldVal).length){
+          console.log("update")
+          this.$store.commit('updateItem', {id: this.id, data: newVal})
+        }
+      },
+      deep: true      
+    }
+  },
+  created () {
+    this.datas = this.$store.getters.tableItem(this.id)
+  }
 }
 </script>
 

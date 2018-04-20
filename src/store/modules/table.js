@@ -1,13 +1,13 @@
 import database from '@/api/database'
-
+import DB from '@/db/db'
 
 const state = {
     tableItems: [],
-    dayNum: 5,
-    startHour: 8,
-    endHour: 18,
-    vertical: true,
-    horizontal: true
+    dayNum: "",
+    startHour: "",
+    endHour: "",
+    vertical: "",
+    horizontal: ""
 }
 
 const getters = {
@@ -16,12 +16,24 @@ const getters = {
     startHour: state => state.startHour,
     endHour: state => state.endHour,
     vertical: state => state.vertical,
-    horizontal: state => state.horizontal
+    horizontal: state => state.horizontal,
+    tableItem: (state) => (id) => {
+        console.log(state.tableItems)
+        return state.tableItems[0]
+    }
 }
 const actions = {
     getAllTableItems ({ commit }){
-        database.getAllTableItems(tableItems => {
+        // DB.initSettings()
+        // DB.addSettings()
+        // DB.addLesson({"day": "月", "name": "プログラミング基礎", "classRoom": "E231", "teacher": "tanaka", "startHour": 8, "startMinutes": 50, "endHour": 9, "endMinutes": 30})
+        DB.getAllLesson(tableItems => {
             commit('setTableItems', tableItems)
+        })
+    },
+    getSettings({commit}){
+        DB.getSettings(settings => {
+            commit('setSettings', settings)
         })
     }
 }
@@ -44,6 +56,18 @@ const mutations = {
     setHorizontal (state) {
         state.horizontal = !state.horizontal
     },
+    updateItem (state, data) {
+        state.tableItems[data.id] = data.data
+        DB.updateLesson(data.id, data.data)
+    } ,
+    setSettings(state, settings) {
+        state.dayNum = settings.dayNum
+        state.startHour = settings.startHour
+        state.endHour = settings.endHour
+        state.vertical = settings.vertical
+        state.horizontal = settings.horizontal
+        console.log(state)
+    }
 }
 
 export default {

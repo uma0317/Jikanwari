@@ -10,11 +10,12 @@
 </template>
 
 <script>
-import DB from '@/db/db'
+
 import HomePage from './pages/HomePage'
 import Settings from './pages/Settings'
 import Detail from './pages/Detail'
-var db = new DB()
+
+
 export default {
   data() {
     return {
@@ -26,13 +27,7 @@ export default {
           page: HomePage,
           key: "homePage"
         },
-        {
-          icon: 'fa-bell',
-          label: 'News',
-          page: Detail,
-          badge: 7,
-          key: "newsPage"
-        },
+
         {
           icon: 'fa-sliders',
           label: 'Settings',
@@ -40,16 +35,16 @@ export default {
           key: "settingsPage"
         }
       ]
-    };
+    }
   },
   methods: {
     md() {
-      return this.$ons.platform.isAndroid();
+      return this.$ons.platform.isAndroid()
     }
   },
   computed: {
     title() {
-      return this.tabs[this.activeIndex].label;
+      return this.tabs[this.activeIndex].label
     }
   },
   components: {

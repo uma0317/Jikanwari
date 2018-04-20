@@ -118,9 +118,6 @@ export default {
         }
     },
     created() {
-        this.startHour = this.$store.getters.startHour
-        this.endHour = this.$store.getters.endHour
-        this.dayNum = this.$store.getters.dayNum
     }
 }
 </script>
