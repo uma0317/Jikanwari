@@ -43,7 +43,6 @@ export default {
             )
           
             transaction.oncomplete = function() {
-                alert('保存成功')
                 db.close()
             }
             
