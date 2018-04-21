@@ -5,6 +5,14 @@
         <v-ons-back-button>戻る</v-ons-back-button>
       </div>
       <div class="center">詳細</div>
+      <div class="right">
+        <v-ons-toolbar-button
+          tappable
+          @click="alertDialog = true"
+        >
+          削除
+        </v-ons-toolbar-button>
+      </div>
     </v-ons-toolbar>
    <v-ons-list>
         <v-ons-list-item>
@@ -103,14 +111,6 @@
             </v-ons-select>
           </div>
         </v-ons-list-item>
-        <div class="center" style="text-align:center">
-          <v-ons-button 
-            tappable
-            @click="alertDialog = true"
-            style="width:60%">
-              削除
-          </v-ons-button>
-        </div>
     </v-ons-list>
 
     <v-ons-alert-dialog modifier="rowfooter"
