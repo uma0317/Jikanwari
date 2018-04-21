@@ -19,7 +19,7 @@ const getters = {
     horizontal: state => state.horizontal,
     tableItem: (state) => (id) => {
         console.log(state.tableItems)
-        return state.tableItems[0]
+        return state.tableItems[id]
     }
 }
 const actions = {
@@ -38,12 +38,25 @@ const actions = {
             })
             this.dispatch('getAllTableItems')
         })
+    },
+    addTableItem({commit}, newItem) {
+        DB.addItem(newItem, () => {
+            this.dispatch('getAllTableItems')
+        })
+    },
+    deleteTableItem({commit, state}, id) {
+        // delete state.tableItems[id]
 
+        DB.deleteLesson(id, () => {
+            // commit('deleteTableItem', id)
+            this.dispatch('getAllTableItems')
+        })
     }
 }
 const mutations = {
     setTableItems (state, tableItems) {
         state.tableItems = tableItems
+        console.log(state.tableItems)
     },
     setStartHour (state, startHour) {
         state.startHour = startHour
@@ -62,7 +75,12 @@ const mutations = {
     },
     updateItem (state, data) {
         state.tableItems[data.id] = data.data
-        DB.updateLesson(data.id, data.data)
+        console.log(data)
+        
+        DB.updateLesson(parseInt(data.id), data.data)
+    },
+    deleteTableItem(state, id) {
+        delete state.tableItems[id]
     },
     updateSettings(state, datas) {
         console.log(state)

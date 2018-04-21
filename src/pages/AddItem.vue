@@ -104,7 +104,7 @@
           </div>
         </v-ons-list-item>
       <div class="center" style="text-align:center">
-        <v-ons-button style="margin: 6px 0">Normal</v-ons-button>
+        <v-ons-button @click="addItem()" style="width:60%">追加</v-ons-button>
       </div>
     </v-ons-list>
 
@@ -148,6 +148,9 @@ export default {
         }
         return array
     },
+    addItem() {
+      this.$store.dispatch('addTableItem', this.datas)
+    }
   },
   watch: {
   },

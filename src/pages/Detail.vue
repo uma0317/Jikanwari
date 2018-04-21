@@ -103,7 +103,34 @@
             </v-ons-select>
           </div>
         </v-ons-list-item>
+        <div class="center" style="text-align:center">
+          <v-ons-button 
+            tappable
+            @click="alertDialog = true"
+            style="width:60%">
+              削除
+          </v-ons-button>
+        </div>
     </v-ons-list>
+
+    <v-ons-alert-dialog modifier="rowfooter"
+      :title="'Confirm'"
+      :footer="{
+        Cancel: () => {
+          alertDialog = false
+        },
+        Ok: () => {
+          this.$store.dispatch('deleteTableItem', id)          
+          
+          alertDialog = false
+          $emit('pop-page')
+        }
+      }"
+      :visible.sync="alertDialog"
+    >
+      本当に削除しますか？
+    </v-ons-alert-dialog>
+
   </v-ons-page>
 </template>
 
@@ -119,6 +146,7 @@ export default {
         },
         hours: this.range(24),
         minutes: this.range(60),
+        alertDialog: false
       }
   },
   computed: {
@@ -138,12 +166,15 @@ export default {
         }
         return array
     },
+    test () {
+      console.log("jo")
+    }
   },
   watch: {
     datas: {
       handler(newVal, oldVal) {
         if(Object.keys(oldVal).length){
-          console.log("update")
+          console.log(this.id)
           this.$store.commit('updateItem', {id: this.id, data: newVal})
         }
       },
@@ -152,6 +183,8 @@ export default {
   },
   created () {
     this.datas = this.$store.getters.tableItem(this.id)
+    console.log("this id is " + this.id)
+    console.log(this.datas)
   }
 }
 </script>
