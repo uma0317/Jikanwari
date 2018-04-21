@@ -2,6 +2,11 @@
     <v-ons-page>
         <v-ons-toolbar class="home-toolbar">
             <div class="center">HOME</div>
+            <div class="right">
+                <v-ons-toolbar-button @click="pushAddPage()">
+                <v-ons-icon icon="fa-plus-circle"></v-ons-icon>
+                </v-ons-toolbar-button>
+            </div>
         </v-ons-toolbar>
         <div class="contents">
             <div class="svg-wrapper">
@@ -34,6 +39,7 @@ import TableItem from './TableItem'
 import {mapGetters} from 'vuex'
 import Datas from './Datas'
 import Detail from '@/pages/Detail'
+import AddItem from '@/pages/AddItem'
 export default {
     data () {
         return {
@@ -88,6 +94,9 @@ export default {
                 }
             })
         },
+        pushAddPage() {
+            this.$emit('push-page', AddItem)
+        },
         goTo (url) {
         const newWindow = window.open(url, '_blank')
         newWindow.opener = null
@@ -101,7 +110,7 @@ export default {
     },
 
     components: {
-        TableItem
+        TableItem,
     }
 }
 </script>
