@@ -5,7 +5,7 @@
         </v-ons-toolbar>
         <div class="contents">
             <div class="svg-wrapper">
-                <svg :viewBox="`0 0 ${this.tableWidth} ${this.cellHeight * this.hourRange}`">
+                <svg :viewBox="`0 0 ${this.tableWidth} ${this.cellHeight * (this.hourRange + 1)}`">
                     <g :transform="timeTransform">
                         <text  v-for="n in 24" v-if="n-1 <= endHour && n-1 >= startHour" :x="tableWidth * (1 - tableScale)" :y ="cellHeight * (n - 1) + tablePaddingTop - cellHeight * startHour" text-anchor="end" dominant-baseline="middle" style="font-size:15px">{{n-1 + ":00"}}</text>                                        
                     </g>
@@ -97,7 +97,7 @@ export default {
     
     created () {
         this.$store.dispatch('getSettings')
-        this.$store.dispatch('getAllTableItems')
+        // this.$store.dispatch('getAllTableItems')
     },
 
     components: {

@@ -32,9 +32,13 @@ const actions = {
         })
     },
     getSettings({commit}){
-        DB.getSettings(settings => {
-            commit('setSettings', settings)
+        DB.init(() => {
+            DB.getSettings(settings => {
+                commit('setSettings', settings)
+            })
+            this.dispatch('getAllTableItems')
         })
+
     }
 }
 const mutations = {
@@ -59,7 +63,15 @@ const mutations = {
     updateItem (state, data) {
         state.tableItems[data.id] = data.data
         DB.updateLesson(data.id, data.data)
-    } ,
+    },
+    updateSettings(state, datas) {
+        console.log(state)
+        state[datas.name] = datas.value
+        let data = {...state}
+        console.log(data)
+        delete data["tableItems"]
+        DB.updateSettings(data)
+    },
     setSettings(state, settings) {
         state.dayNum = settings.dayNum
         state.startHour = settings.startHour

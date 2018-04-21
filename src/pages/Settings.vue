@@ -89,7 +89,8 @@ export default {
                 return this.$store.getters.dayNum
             },
             set: function (val) {
-                this.$store.commit('setDayNum', val)
+                // this.$store.commit('setDayNum', val)
+                this.$store.commit('updateSettings', {name: "dayNum", value: val})
             }
         },
         startHour: {
@@ -97,7 +98,8 @@ export default {
                 return this.$store.getters.startHour
             },
             set: function (val) {
-                this.$store.commit('setStartHour', val)
+                // this.$store.commit('setStartHour', val)
+                this.$store.commit('updateSettings', {name: "startHour", value: val})
             }
         },
         endHour: {
@@ -105,7 +107,8 @@ export default {
                 return this.$store.getters.endHour
             },
             set: function (val) {
-                this.$store.commit('setEndHour', val)
+                // this.$store.commit('setEndHour', val)
+                this.$store.commit('updateSettings', {name: "endHour", value: val})
             }
         },
         vertical: {
@@ -113,7 +116,8 @@ export default {
                 return this.$store.getters.vertical
             },
             set: function (val) {
-                this.$store.commit('setVertical', val)
+                // this.$store.commit('setVertical', val)
+                this.$store.commit('updateSettings', {name: "vertical", value: val})
             }
         },
         horizontal: {
@@ -121,7 +125,8 @@ export default {
                 return this.$store.getters.horizontal
             },
             set: function (val) {
-                this.$store.commit('setHorizontal', val)
+                // this.$store.commit('setHorizontal', val)
+                this.$store.commit('updateSettings', {name: "horizontal", value: val})
             }
         },
         hours: function () {
