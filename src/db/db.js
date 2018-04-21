@@ -7,7 +7,6 @@ export default {
         if (!window.indexedDB) {
           window.alert("Your browser doesn't support a stable version of IndexedDB.")
         }
-        console.log("will inti")
         var request = window.indexedDB.open(dbName, 1)
         var db
         request.onupgradeneeded = function(event) {
