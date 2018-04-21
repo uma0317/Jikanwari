@@ -50,11 +50,11 @@ const mutations = {
     setDayNum (state, num) {
         state.dayNum = num
     },
-    setVertical (state) {
-        state.vertical = !state.vertical
+    setVertical (state, val) {
+        state.vertical = val
     },
-    setHorizontal (state) {
-        state.horizontal = !state.horizontal
+    setHorizontal (state, val) {
+        state.horizontal = val
     },
     updateItem (state, data) {
         state.tableItems[data.id] = data.data

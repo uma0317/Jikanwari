@@ -66,58 +66,89 @@
 </template>
 
 <script>
+import {mapState, mapGetters} from 'vuex'
+import { mapMutations } from 'vuex'
 export default {
     props: [
         "id",
+        
     ],
     data () {
         return {
             name: "",
-            dayNum: state => state.dayNum,
             itemsDay: [
                 { text: '平日', value: '5' },
                 { text: '平日 + 土', value: '6' },
                 { text: '平日 + 土日', value: '7' }
             ],
-            startHour: state => state.startHour,
-            endHour: state => state.endHour,
-            hours: this.range(),
-            vertical: state => state.vertical,
-            horizontal: state => state.horizontal
         }
     },
-    watch: {
-        dayNum: function (newVal, oldVal) {
-            this.$store.commit('setDayNum', newVal)
+    computed: {
+        dayNum: {
+            get: function () {
+                return this.$store.getters.dayNum
+            },
+            set: function (val) {
+                this.$store.commit('setDayNum', val)
+            }
         },
-        startHour: function (newVal, oldVal) {
-            this.$store.commit('setStartHour', newVal)
+        startHour: {
+            get: function () {
+                return this.$store.getters.startHour
+            },
+            set: function (val) {
+                this.$store.commit('setStartHour', val)
+            }
         },
-        endHour: function (newVal, oldVal) {
-            this.$store.commit('setEndHour', newVal)
+        endHour: {
+            get: function () {
+                return this.$store.getters.endHour
+            },
+            set: function (val) {
+                this.$store.commit('setEndHour', val)
+            }
         },
-        vertical: function () {
-            this.$store.commit('setVertical')
+        vertical: {
+            get: function () {
+                return this.$store.getters.vertical
+            },
+            set: function (val) {
+                this.$store.commit('setVertical', val)
+            }
         },
-        horizontal: function () {
-            this.$store.commit('setHorizontal')
-        }
+        horizontal: {
+            get: function () {
+                return this.$store.getters.horizontal
+            },
+            set: function (val) {
+                this.$store.commit('setHorizontal', val)
+            }
+        },
+        hours: function () {
+            let array = []
+            for(let i = 0; i < 24; i++) {
+                array.push({text: i, value: i})
+            }
+            return array
+        },
+
     },
+
     methods: {
         goTo (url) {
         const newWindow = window.open(url, '_blank')
         newWindow.opener = null
         newWindow.location = url
         },
-        range () {
-            let array = []
-            for(let i = 0; i < 24; i++) {
-                array.push({text: i, value: i})
-            }
-            return array
-        }
+        ...mapMutations([
+        'increment', // `this.increment()` を `this.$store.commit('increment')` にマッピングする
+
+        // mapMutations はペイロードサポートする:
+        'incrementBy' // `this.incrementBy(amount)` を `this.$store.commit('incrementBy', amount)` にマッピングする
+        ]),
     },
     created() {
+        console.log(this)
     }
 }
 </script>

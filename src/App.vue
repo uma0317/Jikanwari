@@ -51,6 +51,9 @@ export default {
     HomePage,
     Settings,
     Detail
+  },
+  created() {
+
   }
 }
 </script>
