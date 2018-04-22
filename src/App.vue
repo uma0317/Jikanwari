@@ -59,4 +59,8 @@ export default {
 </script>
 
 <style>
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+}
 </style>
